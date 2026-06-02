@@ -1,6 +1,7 @@
 import ProfilePage from './components/ProfilePage';
 import ProjectCard from './components/ProjectCard';
 import ContactPage from './components/ContactPage'
+import SocialLinks from './components/SocialLinks';
 
 function App() {
   const projectData = [
@@ -52,7 +53,7 @@ function App() {
       </nav>
 
       <main className="pt-16">
-        
+        <SocialLinks />
         <ProfilePage />
 
         <section id="projects" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24 border-t border-slate-800">
