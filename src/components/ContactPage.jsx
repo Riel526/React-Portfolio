@@ -3,15 +3,37 @@ import { useState } from 'react';
 function ContactPage() {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Since this is a static frontend portoflio, we log it for now.
-    // You can later hook this up to Formspree, EmailJS, or your own backend.
-    console.log('Form Submission:', formData);
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 5000);
-    setFormData({ name: '', email: '', message: '' });
+    setError(false);
+    setIsSubmitting(true)
+
+    try {
+      const response = await fetch('https://formspree.io/f/xdajqqej', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        setSubmitted(true);
+        setFormData({ name: '', email: '', message: '' });
+        setTimeout(() => setSubmitted(false), 5000);
+      } else {
+        setError(true);
+      }
+    } catch (err) {
+      console.error(err)
+      setError(true);
+    } finally {
+      setIsSubmitting(false); // Re-enable button after the request finishes
+    }
   };
 
   const handleChange = (e) => {
@@ -59,7 +81,7 @@ function ContactPage() {
             <a href="https://github.com/Riel526" target="_blank" rel="noreferrer" className="text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors">
               GitHub ↗
             </a>
-            <a href="#" target="_blank" rel="noreferrer" className="text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors">
+            <a href="https://www.linkedin.com/in/gabriel-padolina-559a4a243/" target="_blank" rel="noreferrer" className="text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors">
               LinkedIn ↗
             </a>
           </div>
@@ -78,7 +100,7 @@ function ContactPage() {
                 value={formData.name}
                 onChange={handleChange}
                 className="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-colors"
-                placeholder="John Doe"
+                placeholder="Your name here"
               />
             </div>
 
@@ -92,7 +114,7 @@ function ContactPage() {
                 value={formData.email}
                 onChange={handleChange}
                 className="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-colors"
-                placeholder="john@example.com"
+                placeholder="Your email here"
               />
             </div>
 
@@ -106,20 +128,28 @@ function ContactPage() {
                 value={formData.message}
                 onChange={handleChange}
                 className="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-colors resize-none"
-                placeholder="Let's talk about a project opportunity..."
+                placeholder="Let's talk about opportunities and ideas..."
               ></textarea>
             </div>
 
+            {/* Button updates dynamically based on submission state */}
             <button 
               type="submit" 
-              className="w-full py-3 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-900 font-bold hover:scale-[1.01] active:scale-[0.99] transition-all shadow-md flex items-center justify-center gap-2"
+              disabled={isSubmitting}
+              className="w-full py-3 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-900 font-bold hover:scale-[1.01] active:scale-[0.99] transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             >
-              Send Message
+              {isSubmitting ? 'Sending...' : 'Send Message'}
             </button>
 
             {submitted && (
               <div className="text-center text-xs font-medium text-emerald-400 mt-2 animate-pulse">
                 ✓ Message received! Thanks for reaching out.
+              </div>
+            )}
+
+            {error && (
+              <div className="text-center text-xs font-medium text-rose-400 mt-2">
+                ✕ Something went wrong. Please try again later.
               </div>
             )}
           </form>
