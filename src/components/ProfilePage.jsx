@@ -23,11 +23,11 @@ function ProfilePage() {
           </h1>
 
           <h2 className="text-2xl sm:text-3xl font-bold text-slate-300 mb-6">
-            Specialized in functional financial services, data auditing, and legacy migrations.
+            Specialized in functional financial services, third-party API integrations, and legacy migrations.
           </h2>
 
           <p className="text-base sm:text-lg text-slate-400 max-w-2xl lg:mx-0 mx-auto mb-10 leading-relaxed">
-            I'm an aspiring front-end developer focused on creating specializing in building secure, transaction-heavy web applications. From engineering real-time audit logs and financial services to migrating legacy PHP architectures over to modernize vue frontends, I design systems where the UI explicitly serves the data.
+            I develop end-to-end backend logic and responsive user interfaces for operations like international remittance, currency exchange, and insurance processing. Whether scaling decoupled microservices, optimizing core Laravel MVC monoliths, or migrating legacy jQuery and Blade components over to modern Vue/Vuetify while working directly with relational databases, stored procedures, and triggers.
           </p>
 
           <div className="flex flex-wrap lg:justify-start justify-center gap-4 mb-12">
